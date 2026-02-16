@@ -2,6 +2,8 @@
 
 **AI SkillBridge** is a powerful AI-driven platform designed to bridge the gap between your current skills and your dream career. By analyzing your resume against specific job descriptions, it identifies high-priority skill gaps and generates tailored, time-boxed study plans to get you job-ready.
 
+**🔗 Live Demo**: [https://ai-skill-bridge-production.up.railway.app](https://ai-skill-bridge-production.up.railway.app)
+
 ## ✨ Features
 
 - **AI Gap Analysis**: Advanced extraction of skills from PDF/DOCX resumes and job descriptions using AI.
