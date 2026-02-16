@@ -1,8 +1,10 @@
 package com.dilip.studyplan.service;
 
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.dilip.studyplan.client.AIClient;
 import com.dilip.studyplan.dto.StudyPlanRequest;
@@ -15,6 +17,9 @@ public class StudyPlanService {
 
     private final AIClient aiClient;
     private final StudyPlanRepository repository;
+
+    private static final DateTimeFormatter DISPLAY_FORMATTER =
+            DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
 
     public StudyPlanService(AIClient aiClient, StudyPlanRepository repository) {
         this.aiClient = aiClient;
@@ -41,7 +46,7 @@ public class StudyPlanService {
                 saved.getId(),
                 saved.getTopic(),
                 saved.getPlan(),
-                saved.getGeneratedAt().toString()
+                saved.getGeneratedAt().format(DISPLAY_FORMATTER)
         );
     }
 
@@ -53,9 +58,21 @@ public class StudyPlanService {
                         entity.getId(),
                         entity.getTopic(),
                         entity.getPlan(),
-                        entity.getGeneratedAt().toString()
+                        entity.getGeneratedAt().format(DISPLAY_FORMATTER)
                 ))
                 .toList();
+    }
+
+    public StudyPlanResponse getPlan(Long id) {
+        StudyPlan entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Study plan not found: " + id));
+
+        return new StudyPlanResponse(
+                entity.getId(),
+                entity.getTopic(),
+                entity.getPlan(),
+                entity.getGeneratedAt().format(DISPLAY_FORMATTER)
+        );
     }
 
     public void deletePlan(Long id) {

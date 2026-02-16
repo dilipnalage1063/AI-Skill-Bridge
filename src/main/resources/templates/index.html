@@ -1,138 +1,782 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>AI Study Plan Generator</title>
+    <title>AI SkillBridge | Personalized Career Path</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #818cf8;
+            --accent-secondary: #c084fc;
+            --glass-border: rgba(255, 255, 255, 0.1);
+
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --secondary-gradient: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --glow-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
         body {
-            background: #f4f6f9;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 50px;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
         }
+
+        .container {
+            max-width: 900px;
+        }
+
+        .title-section {
+            background: var(--surface-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .title-section h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .title-section p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            font-weight: 500;
+        }
+
         .card {
-            border-radius: 15px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
-        .title {
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .card-header-custom {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.5rem 2rem;
+        }
+
+        .card-header-custom h5 {
+            margin: 0;
             font-weight: 700;
-            color: #2c3e50;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--accent-primary);
         }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: #475569;
+        }
+
+        .btn {
+            border-radius: 14px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .readiness-score {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .readiness-score h4 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, #10b981 0%, #6ee7b7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gap-item {
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .gap-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(8px);
+        }
+
+        .gap-high {
+            border-left: 6px solid #ef4444;
+        }
+
+        .gap-medium {
+            border-left: 6px solid #f59e0b;
+        }
+
+        .gap-low {
+            border-left: 6px solid #10b981;
+        }
+
+        .badge {
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .days-input-section {
+            background: rgba(99, 102, 241, 0.05);
+            padding: 2.5rem;
+            border-radius: 24px;
+            margin: 2rem 0;
+            border: 2px dashed rgba(99, 102, 241, 0.2);
+            text-align: center;
+        }
+
+        .days-input-section label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .days-input-section input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--accent-primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-align: center;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
         .result-box {
             white-space: pre-wrap;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            font-size: 1.1rem;
+            line-height: 2;
+            color: #cbd5e1;
         }
+
         .history-box {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .history-box:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-primary);
+        }
+
+        .history-box strong {
+            color: var(--text-primary);
+        }
+
+        .history-box small {
+            color: var(--text-secondary);
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--accent-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            background: rgba(99, 102, 241, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--accent-secondary);
+        }
+
+        /* Ensure all icons are visible and stand out in dark mode */
+        i.fas,
+        i.fab,
+        i.far {
+            color: var(--accent-primary) !important;
+            filter: drop-shadow(0 0 5px rgba(129, 140, 248, 0.2));
+        }
+
+        .btn i.fas,
+        .btn i.fab,
+        .btn i.far {
+            color: inherit !important;
+            filter: none !important;
+        }
+
+        .readiness-score i.fas {
+            color: white !important;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+
+        .status-alert {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-radius: 12px;
+        }
+
+        h6 {
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.5rem;
+            color: var(--accent-secondary);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 
 <body>
 
-<div class="container py-5">
-
-    <!-- Title -->
-    <div class="text-center mb-4">
-        <h2 class="title">🚀 AI Study Plan Generator</h2>
-        <p class="text-muted">Generate structured study plans instantly</p>
-    </div>
-
-    <!-- Form Card -->
-    <div class="card shadow p-4 mb-4">
-        <form th:action="@{/generate-plan}" 
-              th:object="${request}" 
-              method="post"
-              onsubmit="showLoader()">
-
-            <div class="mb-3">
-                <label class="form-label">Topic</label>
-                <input type="text" 
-                       th:field="*{topic}" 
-                       class="form-control" 
-                       placeholder="Enter topic"
-                       required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Number of Days</label>
-                <input type="number" 
-                       th:field="*{days}" 
-                       class="form-control" 
-                       placeholder="Enter days"
-                       required>
-            </div>
-
-            <button type="submit" 
-                    class="btn btn-primary w-100">
-                Generate Plan
-            </button>
-
-        </form>
-    </div>
-
-    <!-- Loading Spinner -->
-    <div id="loading" class="text-center mb-4" style="display:none;">
-        <div class="spinner-border text-primary"></div>
-        <p class="mt-2 text-muted">Generating AI Plan...</p>
-    </div>
-
-    <!-- Generated Plan -->
-    <div th:if="${response}" class="card shadow p-4 mb-4">
-        <h5>📘 Generated Plan</h5>
-        <div class="result-box mt-3"
-             th:text="${response.plan}">
-        </div>
-    </div>
-
-    <!-- History -->
-    <div class="card shadow p-4">
-        <h5>📜 History</h5>
-
-        <div th:if="${#lists.isEmpty(history)}" 
-             class="text-muted">
-            No plans generated yet.
+    <div class="container py-5">
+        <!-- Title Section -->
+        <div class="title-section fade-in">
+            <h2><i class="fas fa-bullseye"></i> AI SkillBridge</h2>
+            <p>Bridge your career gaps with personalized AI study plans</p>
         </div>
 
-        <div th:each="item : ${history}" 
-             class="history-box border-bottom py-3 mt-2">
+        <!-- Skill Gap Analysis Form -->
+        <div class="card mb-4 fade-in">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-clipboard-list"></i> Job Skill Gap Analysis</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted mb-4">Upload your resume and job description to analyze skill gaps and get a
+                    personalized study plan</p>
 
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <strong th:text="${item.topic}"></strong>
-                    <small class="text-muted d-block"
-                           th:text="${item.generatedAt}">
-                    </small>
+                <!-- Error Message -->
+                <div th:if="${error}" class="alert alert-danger mb-3 fade-in">
+                    <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
                 </div>
 
-                <form th:action="@{/delete/{id}(id=${item.id})}"
-                      method="post">
-                    <button type="submit"
-                            class="btn btn-sm btn-danger">
-                        Delete
+                <form th:action="@{/analyze-gap}" th:object="${goalRequest}" method="post" id="gapForm"
+                    enctype="multipart/form-data" onsubmit="return prepareFormSubmission(event)">
+
+                    <input type="hidden" th:field="*{goalType}" value="JOB">
+                    <input type="hidden" id="hiddenJdText" name="jdText" th:value="*{jdText}">
+                    <input type="hidden" id="hiddenResumeText" name="resumeText" th:value="*{resumeText}">
+
+                    <div class="mb-4">
+                        <label class="form-label"><i class="fas fa-file-alt"></i> Upload Job Description / JD</label>
+                        <div class="file-upload-area">
+                            <input type="file" class="form-control" id="jdFile" accept=".pdf,.doc,.docx,.txt"
+                                onchange="handleJDUpload(event)">
+                            <small class="text-muted d-block mt-2">Upload job description file (PDF, DOC, DOCX, TXT) or
+                                paste below</small>
+                        </div>
+                        <div id="jdStatus" class="mt-2" style="display: none;"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label"><i class="fas fa-paste"></i> Or Paste Job Description</label>
+                        <textarea th:field="*{targetText}" class="form-control" rows="5" id="targetText"
+                            placeholder="Paste job description here if not uploading file..."></textarea>
+                        <small class="text-muted d-block mt-1">Either upload a JD file above OR paste the job
+                            description here</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label"><i class="fas fa-file-pdf"></i> Upload Resume (Optional)</label>
+                        <div class="file-upload-area">
+                            <input type="file" class="form-control" id="resumeFile" accept=".pdf,.doc,.docx,.txt"
+                                onchange="handleResumeUpload(event)">
+                            <small class="text-muted d-block mt-2">Upload your resume to extract your current
+                                skills</small>
+                        </div>
+                        <div id="resumeStatus" class="mt-2" style="display: none;"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i> Analyze Skill Gaps
                     </button>
                 </form>
             </div>
+        </div>
 
+        <!-- Loading Spinner -->
+        <div id="loading" class="text-center mb-4" style="display:none;">
+            <div class="spinner-border text-primary"></div>
+            <p class="mt-3" style="color: var(--accent-secondary); font-weight: 600;"><i class="fas fa-cog fa-spin"></i>
+                Analyzing skill gaps...</p>
+        </div>
+
+        <!-- Gap Analysis Results (Server-side) -->
+        <div th:if="${gapAnalysis}" class="card mb-4 fade-in" id="serverGapAnalysis">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-chart-bar"></i> Skill Gap Analysis Results</h5>
+            </div>
+            <div class="card-body p-4">
+                <!-- Scores Section -->
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div th:if="${gapAnalysis.readinessScore}" class="readiness-score">
+                            <h4><i class="fas fa-trophy"></i> Readiness: <span
+                                    th:text="${gapAnalysis.readinessScore}"></span></h4>
+                            <p class="mb-0 mt-2">Your overall preparedness</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div th:if="${gapAnalysis.atsScore}" class="readiness-score"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h4><i class="fas fa-check-circle"></i> ATS Score: <span
+                                    th:text="${gapAnalysis.atsScore}"></span></h4>
+                            <p class="mb-0 mt-2">Resume match with JD</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prioritized Skills List - Glass style -->
+                <div th:if="${gapAnalysis.prioritizedSkills != null && !gapAnalysis.prioritizedSkills.isEmpty()}"
+                    class="mb-4 p-4 rounded-4"
+                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);">
+                    <h6 class="mb-3 text-accent-secondary" style="color: var(--accent-secondary) !important;">
+                        <i class="fas fa-list-ol"></i> Prioritized Skills to Learn (in order):
+                    </h6>
+                    <div class="row">
+                        <div th:each="skill, iterStat : ${gapAnalysis.prioritizedSkills}" class="col-md-6 mb-2">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-2" th:text="${iterStat.index + 1}"></span>
+                                <strong th:text="${skill}" class="text-white"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="mb-3"><i class="fas fa-exclamation-triangle"></i> Skill Gaps Identified:</h6>
+                    <div th:each="gap : ${gapAnalysis.gaps}" class="gap-item" th:classappend="${gap.priority == 'HIGH'} ? 'gap-high' : 
+                                    (${gap.priority == 'MEDIUM'} ? 'gap-medium' : 'gap-low')">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong th:text="${gap.skillName}" style="font-size: 1.1rem;"></strong>
+                                <span th:if="${gap.priority == 'HIGH'}" class="badge bg-danger ms-2">HIGH
+                                    PRIORITY</span>
+                                <span th:if="${gap.priority == 'MEDIUM'}" class="badge bg-warning ms-2">MEDIUM
+                                    PRIORITY</span>
+                                <span th:if="${gap.priority == 'LOW'}" class="badge bg-success ms-2">LOW PRIORITY</span>
+                            </div>
+                            <div style="color: var(--text-secondary);">
+                                <strong>Current:</strong> <span th:text="${gap.currentLevel}"
+                                    class="text-white"></span>/5 →
+                                <strong>Required:</strong> <span th:text="${gap.requiredLevel}"
+                                    class="text-white"></span>/5
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Plan Form -->
+                <form th:action="@{/generate-plan-from-gap}" th:object="${goalRequest}" method="post">
+                    <input type="hidden" th:field="*{goalType}">
+                    <input type="hidden" th:field="*{targetText}">
+
+                    <!-- Days Input moved inside form -->
+                    <div class="days-input-section text-center">
+                        <label class="mb-3 d-block"><i class="fas fa-calendar-alt"></i> How many days do you have for
+                            preparation?</label>
+                        <div class="d-flex justify-content-center">
+                            <input type="number" class="form-control text-center"
+                                style="max-width: 150px; border-radius: 12px;" name="days" th:field="*{days}"
+                                placeholder="e.g., 7" min="1" max="90" required>
+                        </div>
+                        <small class="d-block mt-3" style="color: var(--text-secondary); opacity: 0.8;">
+                            Plan will focus on <strong>Highest Priority</strong> gaps based on your time.
+                        </small>
+                    </div>
+
+                    <div th:if="${goalRequest.selfRatings != null}">
+                        <div th:each="entry : ${goalRequest.selfRatings}">
+                            <input type="hidden" th:name="'selfRatings[' + ${entry.key} + ']'"
+                                th:value="${entry.value}">
+                        </div>
+                    </div>
+                    <div th:if="${goalRequest.resumeText != null}">
+                        <input type="hidden" th:field="*{resumeText}">
+                    </div>
+                    <div th:if="${goalRequest.jdText != null}">
+                        <input type="hidden" th:field="*{jdText}">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 mt-3">
+                        <i class="fas fa-rocket"></i> Generate Personalized Study Plan
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Generated Plan -->
+        <div th:if="${response}" class="card mb-4 fade-in">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-book"></i> Generated Study Plan</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3 p-3 rounded-3"
+                    style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);">
+                    <small style="color: var(--text-secondary);">
+                        <i class="fas fa-calendar"></i> Generated on: <strong
+                            th:text="${response.generatedAt}"></strong>
+                    </small>
+                </div>
+                <div class="result-box" id="planContent" th:attr="data-plan=${response.plan}"></div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="card fade-in">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-history"></i> Your Learning History</h5>
+            </div>
+            <div class="card-body p-4">
+                <div th:if="${#lists.isEmpty(history)}" class="text-center py-5" style="opacity: 0.8;">
+                    <i class="fas fa-inbox fa-3x mb-3"
+                        style="color: var(--accent-primary); filter: drop-shadow(0 0 10px rgba(129, 140, 248, 0.3));"></i>
+                    <p class="mb-0" style="color: var(--text-secondary); font-size: 1.1rem;">No study plans generated
+                        yet. Start by analyzing your skill gaps!</p>
+                </div>
+
+                <div th:each="item : ${history}" class="history-box">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="flex-grow-1">
+                            <a th:href="@{/history/{id}(id=${item.id})}" class="d-block text-decoration-none">
+                                <i class="fas fa-file-alt text-primary"></i> <strong th:text="${item.topic}"></strong>
+                            </a>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fas fa-clock"></i> <span th:text="${item.generatedAt}"></span>
+                            </small>
+                        </div>
+                        <div>
+                            <a th:href="@{/history/{id}(id=${item.id})}" class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            <form th:action="@{/delete/{id}(id=${item.id})}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Are you sure you want to delete this plan?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
-</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let resumeText = '';
+        let resumeSkills = {};
+        let jdText = '';
 
-<script>
-    function showLoader() {
-        document.getElementById("loading").style.display = "block";
-    }
-</script>
+        function showGapLoader() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("loading").innerHTML =
+                '<div class="spinner-border text-primary"></div><p class="mt-3" style="color: var(--accent-secondary); font-weight: 600;"><i class="fas fa-cog fa-spin"></i> Analyzing skill gaps...</p>';
+        }
+
+        function prepareFormSubmission(event) {
+            try {
+                // Ensure JD text is included in form submission
+                const jdHiddenInput = document.getElementById('hiddenJdText');
+                const resumeHiddenInput = document.getElementById('hiddenResumeText');
+                const targetTextarea = document.getElementById('targetText');
+
+                if (!jdHiddenInput || !resumeHiddenInput) {
+                    console.error('Form inputs not found');
+                    event.preventDefault();
+                    alert('Form error. Please refresh the page and try again.');
+                    return false;
+                }
+
+                // If JD was uploaded, use that; otherwise use textarea value
+                if (jdText && jdText.trim()) {
+                    jdHiddenInput.value = jdText;
+                    // Also update textarea for display
+                    if (targetTextarea) {
+                        targetTextarea.value = jdText;
+                    }
+                } else if (targetTextarea && targetTextarea.value.trim()) {
+                    jdHiddenInput.value = targetTextarea.value.trim();
+                }
+
+                // Include resume text if available
+                if (resumeText && resumeText.trim()) {
+                    resumeHiddenInput.value = resumeText;
+                }
+
+                // Validate that at least JD is provided
+                const finalJdText = jdHiddenInput.value ? jdHiddenInput.value.trim() : '';
+                if (!finalJdText) {
+                    event.preventDefault();
+                    alert('Please provide a job description either by uploading a file or pasting the text.');
+                    return false;
+                }
+
+                showGapLoader();
+                return true;
+            } catch (error) {
+                console.error('Error preparing form submission:', error);
+                event.preventDefault();
+                alert('An error occurred. Please try again.');
+                return false;
+            }
+        }
+
+        // Handle JD upload
+        function handleJDUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusDiv = document.getElementById('jdStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<div class="status-alert alert alert-info"><i class="fas fa-spinner fa-spin"></i> Parsing JD...</div>';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/study/upload-jd', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        jdText = data.jdText || '';
+                        const textarea = document.getElementById('targetText');
+                        const hiddenInput = document.getElementById('hiddenJdText');
+                        if (textarea) {
+                            textarea.value = jdText;
+                        }
+                        if (hiddenInput) {
+                            hiddenInput.value = jdText;
+                        }
+                        statusDiv.innerHTML = '<div class="status-alert alert alert-success"><i class="fas fa-check-circle"></i> JD parsed successfully!</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="status-alert alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error: ' + (data.error || 'Failed to parse JD') + '</div>';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = '<div class="status-alert alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error uploading JD</div>';
+                    console.error('Error:', error);
+                });
+        }
+
+        // Handle resume upload
+        function handleResumeUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusDiv = document.getElementById('resumeStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<div class="status-alert alert alert-info"><i class="fas fa-spinner fa-spin"></i> Parsing resume...</div>';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/study/upload-resume', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        resumeText = data.resumeText || '';
+                        resumeSkills = data.skills || {};
+                        const hiddenInput = document.getElementById('hiddenResumeText');
+                        if (hiddenInput) {
+                            hiddenInput.value = resumeText;
+                        }
+                        statusDiv.innerHTML = '<div class="status-alert alert alert-success"><i class="fas fa-check-circle"></i> Resume parsed! Found ' + Object.keys(resumeSkills).length + ' skills: ' + Object.keys(resumeSkills).join(', ') + '</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="status-alert alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error: ' + (data.error || 'Failed to parse resume') + '</div>';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = '<div class="status-alert alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error uploading resume</div>';
+                    console.error('Error:', error);
+                });
+        }
+
+        // Convert plan text to HTML with checkboxes
+        function formatPlanWithCheckboxes(planText) {
+            if (!planText) return '';
+
+            let taskCounter = 0;
+            let html = planText
+                .split('\n')
+                .map(line => {
+                    line = line.trim();
+                    if (line.startsWith('Day ')) {
+                        // Day header
+                        return '<h6 class="mt-4 mb-3"><i class="fas fa-calendar-day text-primary"></i> ' + line + '</h6>';
+                    } else if (line.startsWith('[ ]')) {
+                        // Checkbox task
+                        const task = line.substring(3).trim();
+                        const taskId = 'task-' + (taskCounter++);
+                        return '<div class="form-check mb-2"><input type="checkbox" class="form-check-input" id="' + taskId + '"><label class="form-check-label" for="' + taskId + '">' + task + '</label></div>';
+                    } else if (line.startsWith('- ')) {
+                        // Bullet point (convert to checkbox)
+                        const task = line.substring(2).trim();
+                        const taskId = 'task-' + (taskCounter++);
+                        return '<div class="form-check mb-2"><input type="checkbox" class="form-check-input" id="' + taskId + '"><label class="form-check-label" for="' + taskId + '">' + task + '</label></div>';
+                    } else if (line.length > 0) {
+                        return '<p class="mb-2">' + line + '</p>';
+                    }
+                    return '';
+                })
+                .join('');
+
+            return html;
+        }
+
+        // Initialize plan formatting on page load and after dynamic content loads
+        function initializePlanCheckboxes() {
+            const planContent = document.getElementById('planContent');
+            if (planContent && planContent.getAttribute('data-plan')) {
+                const planText = planContent.getAttribute('data-plan');
+                planContent.innerHTML = formatPlanWithCheckboxes(planText);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializePlanCheckboxes();
+        });
+
+        // Also initialize after Thymeleaf renders (for history views)
+        setTimeout(initializePlanCheckboxes, 100);
+    </script>
 
 </body>
+
 </html>
