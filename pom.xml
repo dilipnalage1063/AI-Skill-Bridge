@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.dilip</groupId>
-    <artifactId>studyplan</artifactId>
+    <artifactId>ai-skill-bridge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ai-study-plan</name>
+    <name>ai-skill-bridge</name>
     <description>AI Study Plan Generator Backend</description>
     <url/>
     <licenses>

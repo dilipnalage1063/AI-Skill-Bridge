@@ -28,7 +28,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/dilipnalage1063/Skill-Gap-Analyzer-Study-Planner.git
+   git clone https://github.com/dilipnalage1063/AI-Skill-Bridge.git
    ```
 
 2. Configure your API key in `src/main/resources/application.properties`:
