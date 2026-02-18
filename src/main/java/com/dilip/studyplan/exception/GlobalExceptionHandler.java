@@ -22,14 +22,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
-//
-//        Map<String, Object> errorResponse = new HashMap<>();
-//        errorResponse.put("timestamp", LocalDateTime.now());
-//        errorResponse.put("error", "Internal Server Error");
-//        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-//
-//        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
+
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("timestamp", LocalDateTime.now());
+        errorResponse.put("error", "An unexpected error occurred. Please try again later.");
+        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        // Log the actual error for debugging (in a real scenario, use a Logger)
+        System.err.println("Generic Exception: " + ex.getMessage());
+        ex.printStackTrace();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -14,7 +14,7 @@
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Spring Boot 3.2.5, Java 17, Spring Data JPA, Spring AI.
+- **Backend**: Spring Boot 3.2.5, Java 17, Spring Data JPA, Spring AI, MySQL.
 - **Frontend**: HTML5, Vanilla CSS3 (Custom Glassmorphism Design), JavaScript (Async/Await), Thymeleaf.
 - **AI Engine**: Gemini 2.0 Flash (via OpenRouter).
 - **Utils**: Apache Tika (Document Extraction), FontAwesome (Icons).
@@ -28,23 +28,40 @@
 
 ### Installation
 
+### Installation
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/dilipnalage1063/AI-Skill-Bridge.git
    ```
 
-2. Configure your API key in `src/main/resources/application.properties`:
-   ```properties
-   openrouter.api.key=your_api_key_here
-   ```
+2. Set your **Environment Variables**:
+   For local development, you can set these in your shell or IDE:
+   - `OPENROUTER_API_KEY`: Your OpenRouter API key.
+   - `SPRING_DATASOURCE_URL`: (Optional) `jdbc:h2:mem:studydb` if using H2, or your production DB URL.
 
 3. Build and run:
    ```bash
    ./mvnw clean install
-   java -jar target/studyplan-0.0.1-SNAPSHOT.jar
+   java -jar target/ai-skill-bridge-0.0.1-SNAPSHOT.jar
    ```
 
 4. Open in browser: `http://localhost:8080`
+
+## 🌐 Deployment (Railway / Render / Aiven)
+
+To keep the project live and secure, set the following **Environment Variables** in your hosting dashboard:
+
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `OPENROUTER_API_KEY` | **Required** for AI features | `sk-or-v1-...` |
+| `SPRING_DATASOURCE_URL` | Persistent DB URL | `jdbc:postgresql://...` |
+| `SPRING_DATASOURCE_USERNAME` | DB Username | `postgres` |
+| `SPRING_DATASOURCE_PASSWORD` | DB Password | `your_password` |
+| `SPRING_JPA_DATABASE_PLATFORM` | Hibernate Dialect | `org.hibernate.dialect.MySQLDialect` |
+
+> [!TIP]
+> Always use environment variables for secrets. Never hardcode API keys in `application.properties`.
 
 ## 📄 License
 This project is for educational purposes. All rights reserved.
