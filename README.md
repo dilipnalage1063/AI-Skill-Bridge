@@ -4,6 +4,10 @@
 
 ---
 
+**🔗 Live Demo**: [https://ai-skill-bridge-production.up.railway.app](https://ai-skill-bridge-production.up.railway.app)
+
+---
+
 ## 🌟 Key Features
 
 - **🔍 AI-Powered Gap Analysis**: Extracts technical skills from PDF/DOCX resumes and compares them with Job Descriptions using **Gemini 2.0 Flash**.
