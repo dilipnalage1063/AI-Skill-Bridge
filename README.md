@@ -1,89 +1,112 @@
+<div align="center">
+  <img src="https://img.shields.io/badge/Spring--Boot-3.2.5-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot"/>
+  <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk" alt="Java"/>
+  <img src="https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql" alt="MySQL"/>
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"/>
+</div>
+
 # AI SkillBridge 🚀
 
-**AI SkillBridge** is an intelligent, full-stack career development platform designed to bridge the gap between candidate skills and job requirements. By leveraging Generative AI, it analyzes resumes against job descriptions to identify technical gaps and generates personalized, time-boxed study plans.
+**An AI-powered career growth platform that identifies skill gaps and generates personalized study plans.**
 
 ---
 
-**🔗 Live Demo**: [https://ai-skill-bridge-production.up.railway.app](https://ai-skill-bridge-production.up.railway.app)
+## 🔗 Live Demo
+> [!IMPORTANT]
+> **Experience the AI-driven career pathing live!**
+> ## [🚀 Launch AI SkillBridge Platform](https://ai-skill-bridge-production.up.railway.app)
 
 ---
 
-## 🌟 Key Features
+## 📝 Problem Statement
+Traditional job applications create a "black box" where candidates don't know why they were rejected. Identifying the specific technical gaps between a resume and a job description is time-consuming and difficult. 
 
-- **🔍 AI-Powered Gap Analysis**: Extracts technical skills from PDF/DOCX resumes and compares them with Job Descriptions using **Gemini 2.0 Flash**.
-- **📅 Personalized Study Plans**: Generates structured, day-wise preparation schedules tailored to the user's available timeline.
-- **🛡️ Hybrid Fallback Engine**: Implements a robust rule-based fallback system to ensure 100% availability even during AI service downtime.
-- **📄 Document Parsing**: Utilizes **Apache Tika** for high-accuracy text extraction from multiple document formats.
-- **✨ Premium UI/UX**: Features a modern, glassmorphism-based dark interface for an engaging user experience.
-- **📊 Learning History**: Persistent tracking of all past analyses and study plans using **MySQL**.
+**AI SkillBridge** bridges this gap by:
+- **Instant Analysis**: Comparing PDF/DOCX resumes against Job Descriptions in seconds.
+- **Prioritized Roadmap**: Identifying not just "what's missing," but what's *most critical* to learn.
+- **Actionable Execution**: Turning gaps into a structured, day-wise study plan.
+
+---
+
+## 🏗️ Architecture Diagram
+*A clean, efficient full-stack architecture designed for AI-driven insights.*
+
+```mermaid
+graph LR
+    A[User] ---|Upload| B(Frontend: Thymeleaf/JS)
+    B ---|API Request| C{Spring Boot Core}
+    C ---|Extract Text| D[Apache Tika]
+    C ---|Analyze Gaps| E[Gemini 2.0 AI]
+    C ---|Store Result| F[(MySQL Database)]
+    E ---|JSON Plan| C
+    C ---|Render| B
+```
+
+---
+
+## 🌟 Features
+- **🔍 AI Gap Analysis**: Real-time extraction and comparison of technical skills.
+- **📅 Study Plan Generator**: Custom, day-by-day schedules tailored to your timeline.
+- **🛡️ 100% Availability**: Rule-based fallback system for when AI services are offline.
+- **📄 Multi-Format Support**: High-fidelity parsing of PDF, Word, and Text files.
+- **✨ Luxury Dark UI**: Modern glassmorphism design for a premium user experience.
+- **📊 Persistent History**: Track your progress and review past analyses anytime.
 
 ---
 
 ## 🛠️ Tech Stack
-
-### Backend
-- **Framework**: Spring Boot 3.2.5 (Java 17)
-- **Data Access**: Spring Data JPA
-- **AI Integration**: Gemini 2.0 (via OpenRouter)
-- **Document Processing**: Apache Tika
-- **Build Tool**: Maven
-
-### Frontend
-- **UI**: Thymeleaf, HTML5, Vanilla CSS3 (Custom Glassmorphism)
-- **Logic**: JavaScript (ES6+, Async/Await)
-- **Icons**: FontAwesome 6
-
-### Infrastructure
-- **Database**: MySQL 8.0
-- **Containerization**: Docker
-- **Deployment**: Railway
+| Category | Technologies |
+| :--- | :--- |
+| **Backend** | Java 17, Spring Boot 3.2.5, Spring Data JPA |
+| **Frontend** | Thymeleaf, Vanilla CSS3, JavaScript (ES6+) |
+| **AI & ML** | Google Gemini 2.0 (via OpenRouter API) |
+| **Data & Storage** | MySQL 8.0, Apache Tika (Parsing) |
+| **Infrastructure** | Docker, Railway, Swagger (OpenAPI 3) |
 
 ---
 
-## 🚀 Impact & Performance (Prototype Level)
-
-- **Scalability**: Capable of handling **100+ concurrent requests** for study plan generation.
-- **Performance**: Optimized prompt engineering to reduce AI response times by **~30%**.
-- **Reliability**: Zero-failure architecture using local fallback templates for critical functions.
-- **Validation**: Successfully tested with **40+ beta users** for interface usability.
-
----
-
-## 🛠️ Getting Started
-
-### Prerequisites
-- JDK 17
-- MySQL Server
-- OpenRouter API Key
-
-### Installation
-
-1.  **Clone the Repo**
-    ```bash
-    git clone https://github.com/dilipnalage1063/AI-Skill-Bridge.git
-    cd AI-Skill-Bridge
-    ```
-
-2.  **Environment Setup**
-    Set the following variables in your environment:
-    - `OPENROUTER_API_KEY`: Your API key.
-    - `SPRING_DATASOURCE_URL`: `jdbc:mysql://localhost:3306/studydb`
-    - `SPRING_DATASOURCE_USERNAME`: `root`
-    - `SPRING_DATASOURCE_PASSWORD`: `your_password`
-
-3.  **Run with Maven**
-    ```bash
-    ./mvnw spring-boot:run
-    ```
+## 📸 Screenshots
+<table align="center">
+  <tr>
+    <td align="center"><img src="screenshots/landing_page.png" width="400"/><br/><b>1. Analysis Dashboard</b></td>
+    <td align="center"><img src="screenshots/analysis_results.png" width="400"/><br/><b>2. Identified Skill Gaps</b></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="screenshots/deployment_dashboard.png" width="800"/><br/><b>3. Live Infrastructure on Railway</b></td>
+  </tr>
+</table>
 
 ---
 
-## 🌐 Deployment
+## 🚀 Installation Steps
 
-The project is configured for seamless deployment on **Railway** using the included `Dockerfile` and `railway.json`.
+### 1. Prerequisites
+- **JDK 17+**
+- **MySQL 8.0+**
+- **OpenRouter/Gemini API Key**
+
+### 2. Local Setup
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/dilipnalage1063/AI-Skill-Bridge.git
+   cd AI-Skill-Bridge
+   ```
+2. **Set Environment Variables**:
+   ```bash
+   # Add your OpenRouter/Gemini key
+   export OPENROUTER_API_KEY='your_key_here'
+   # Configure DB details
+   export SPRING_DATASOURCE_URL='jdbc:mysql://localhost:3306/studydb'
+   export SPRING_DATASOURCE_USERNAME='root'
+   export SPRING_DATASOURCE_PASSWORD='your_password'
+   ```
+3. **Build & Run**:
+   ```bash
+   ./mvnw clean spring-boot:run
+   ```
 
 ---
 
 ## 📄 License
-This project is built for educational and portfolio purposes. 
-© 2026 Dilip Nalage.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+© 2026 **[Dilip Nalage](https://github.com/dilipnalage1063)**.
