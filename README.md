@@ -65,19 +65,6 @@ graph LR
 
 ---
 
-## 📸 Screenshots
-<table align="center">
-  <tr>
-    <td align="center"><img src="screenshots/landing_page.png" width="400"/><br/><b>1. Analysis Dashboard</b></td>
-    <td align="center"><img src="screenshots/analysis_results.png" width="400"/><br/><b>2. Identified Skill Gaps</b></td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2"><img src="screenshots/deployment_dashboard.png" width="800"/><br/><b>3. Live Infrastructure on Railway</b></td>
-  </tr>
-</table>
-
----
-
 ## 🚀 Installation Steps
 
 ### 1. Prerequisites
